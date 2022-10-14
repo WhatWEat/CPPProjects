@@ -6,13 +6,13 @@
 using namespace std;
 
 int main() {
-    Number a("-1");
+    Number a("3.1415926535897932384626433832795028");
     a.Print();
-    Number b("0.05");
+    Number b("12100000000000000000000000000000000");
     b.Print();
     string in;
     (a+b).Print();
-    a.Div(b,1).Print();
+
     getline(cin, in);
     while (!(in == "exit")) {
         Number::error = false;
@@ -34,6 +34,8 @@ int main() {
 }
 /*todo
  * 2022/10/14
- * 1.有多余括号报错
- * 2.补全函数操作
+ * 1.补全函数操作
+ * 2022/10/15
+ * 1.完善sqr精度
+ * 2.补全sin
  * */

@@ -98,10 +98,10 @@ Number GetOp(const Number &number1, Number number2, const string &op) {
     return ans;
 }
 
-Number GetOp(const Number &number, const string &op) {
+Number GetOp(Number number, const string &op) {
     Number ans;
     if (op == "sqr") {
-        ans = ans.sqr();
+        ans = number.sqr();
     } else if (op == "cos") {
         ans = number + 2;
     } else if (op == "sin") {
@@ -114,6 +114,7 @@ Number GetOp(const Number &number, const string &op) {
 
 //利用数字栈 符号栈来进行四则运算
 Number ReadToCal(string in) {
+    Number ans;
     stack<Number> numbers;
     stack<string> op;
     //在表达式添加一对括号
@@ -152,13 +153,22 @@ Number ReadToCal(string in) {
                         numbers.pop();
                         numbers.push(GetOp(num, string_op));
                         op.pop();
+                        //if(op.top() == to_string('(')) op.pop();
                     }
                 } else if (string_op == to_string('(') || GetPriority(string_op) > GetPriority(op.top())) {
                     op.push(string_op);
                 } else {
                     while (GetPriority(string_op) <= GetPriority(op.top())) {
+                        if(numbers.empty()) {
+                            PrintError(8);
+                            return ans;
+                        }
                         Number num1 = numbers.top();
                         numbers.pop();
+                        if(numbers.empty()) {
+                            PrintError(8);
+                            return ans;
+                        }
                         Number num2 = numbers.top();
                         numbers.pop();
                         numbers.push(GetOp(num2, num1, op.top()));
@@ -196,7 +206,12 @@ Number ReadToCal(string in) {
             }
         }
     }
-    return numbers.top();
+    if(!op.empty()) {
+        PrintError(8);
+    } else {
+        ans = numbers.top();
+    }
+    return ans;
 }
 
 //遍历字符串in，查找其是否有且仅有1个等于，同时标记等于号下标为index_equal

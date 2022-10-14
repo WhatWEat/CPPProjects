@@ -13,7 +13,7 @@ int Judge(const string &c, size_t i);
 string Format(string& s);
 int GetPriority(const string &op);
 Number GetOp(const Number& number1,Number number2,const string& op);
-Number GetOp(const Number& number,const string& op);
+Number GetOp(Number number, const string& op);
 //通过输入表达式的字符串，返回Number类型的结果值
 Number ReadToCal(string in);
 //输入in，判断字符串in是否为赋值语句
