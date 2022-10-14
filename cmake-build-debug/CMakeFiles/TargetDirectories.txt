@@ -1,0 +1,9 @@
+D:/Code/CPP/Projects/cmake-build-debug/CMakeFiles/Projects.dir
+D:/Code/CPP/Projects/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Code/CPP/Projects/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project1/CMakeFiles/Project1-Calculator.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project1/CMakeFiles/edit_cache.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project1/CMakeFiles/rebuild_cache.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project2/CMakeFiles/Project2.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project2/CMakeFiles/edit_cache.dir
+D:/Code/CPP/Projects/cmake-build-debug/Project2/CMakeFiles/rebuild_cache.dir
