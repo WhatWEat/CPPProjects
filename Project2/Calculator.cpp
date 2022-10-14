@@ -6,11 +6,12 @@
 using namespace std;
 
 int main() {
-    Number a("0.03");
+    Number a("-1");
     a.Print();
     Number b("0.05");
     b.Print();
     string in;
+    (a+b).Print();
     a.Div(b,1).Print();
     getline(cin, in);
     while (!(in == "exit")) {
@@ -31,18 +32,6 @@ int main() {
         getline(cin, in);
     }
 }
-/*todo
- * 2022/10/10
- * 1.解决除法问题
- * 2.解决小数点问题
- * 3.解决赋值问题
- * */
-/*todo
- * 2022/10/11
- * 1.修复与e先关的小bug
- * input:3*-1e3/5+6
- * output:-6-14
- */
 /*todo
  * 2022/10/14
  * 1.有多余括号报错
