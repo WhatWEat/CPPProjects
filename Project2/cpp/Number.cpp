@@ -336,6 +336,13 @@ Number Number::operator-(const Number &number) const {
             ans.num[i + 1]--;
         }
     }
+    //处理高位的移除
+    for (long long i = small_number.num[0] + 1; i < big_number.num[0]; i++) {
+        if (ans.num[i] < 0) {
+            ans.num[i] += 10;
+            ans.num[i + 1]--;
+        }
+    }
     //弹出最高位的0
     if (ans.num[0] > 0 && ans.num.back() == 0) {
         ans.num.pop_back();
@@ -419,27 +426,28 @@ void Number::MoveDigit(const Number &number, long long start) {
     }
 }
 
-bool Number::CompareNum(const Number &number) const {
-    if (num[0] > number.num[0]) return true;
-    if (num[0] < number.num[0]) return false;
+int Number::CompareNum(const Number &number) const {
+    if (num[0] > number.num[0]) return 1;
+    if (num[0] < number.num[0]) return 0;
     for (long long i = num[0]; i > 0; i--) {
-        if (num[i] > number.num[i]) return true;
-        else if (num[i] < number.num[i]) return false;
+        if (num[i] > number.num[i]) return 1;
+        else if (num[i] < number.num[i]) return 0;
     }
-    return true;
+    return -1;
 }
 
 void Number::Print() {
     if (!sign) cout << '-';
     //输出小数点
     //如果e大于-20，则正常输出数字中的小数点
+    //lower_point表示小数点的位置
     long long lower_point = 0;
     if (!e.sign) {
         if (e.num[0] == 2 && e.num[2] <= 2) lower_point = e.num[2] * 10 + e.num[1];
         if (e.num[0] == 1) lower_point = e.num[1];
         if (lower_point >= num[0]) {
             printf("0.");
-            for (long long i = lower_point - 1; i > num[0]; i++) printf("0");
+            for (long long i = lower_point; i > num[0]; i--) printf("0");
         }
     }
     for (long long i = num[0]; i >= 1; i--) {
@@ -464,7 +472,7 @@ void Number::Print() {
         }
     } else if (e.num[0] > 1 && !lower_point) {
         //补精确位数
-        for (long long i = num[0]; i < scale ; i++) {
+        for (long long i = num[0]; i < scale; i++) {
             if (i == scale) printf(".");
             printf("0");
         }
@@ -475,6 +483,32 @@ void Number::Print() {
         }
     }
     printf("\n");
+}
+
+//利用二分法,来搜索最接近的根号n
+Number Number::sqr() {
+    Number ans, l, r = *this, div("2"), minus("-1");
+    if (!sign) {
+        error = true;
+        PrintError(7);
+        return ans;
+    }
+    if (r.num[0] < scale) {
+        l.MoveDigit(*this, (long long) scale - num[0] + 1);
+    }
+    while (r.CompareNum(l)) {
+        ans = (l + r) / div;
+        Number tmp = ans * ans;
+        if (tmp.CompareNum(ans) == -1) {
+            l = ans;
+            break;
+        } else if (tmp.CompareNum(ans) == 1) {
+            r = ans + minus;
+        } else {
+            l = ans;
+        }
+    }
+    return l;
 }
 
 
@@ -500,6 +534,8 @@ void PrintError(int error_code) {
             break;
         case 6:
             cout << "Set statement is wrong" << endl;
+        case 7:
+            cout << "Number in root can't be negative" << endl;
         default:
             break;
     }

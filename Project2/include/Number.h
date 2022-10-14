@@ -25,10 +25,7 @@ public:
     //在转换过程中会保留正确输入的正负号(sign)，小数点(point)
     explicit Number(const string &input);
     Number();
-    //通过传入的Number类型的number输出对应的数字
-    //在数字末尾连续的0个数小于等于6时，会直接输出，例如1000000仍输出为1000000
-    //在数字末尾连续的0个数大于6时，则会使用科学技术的方法，例如850000000输出为8.5e8
-    void Print();
+
     //加减乘除，都模拟竖式计算
     Number operator*(const Number &number) const;
     //整除
@@ -42,11 +39,18 @@ public:
     Number operator-(const Number &number) const;
     //此处大数 + 小数用的方法与Exp类中的加法基本一致
     Number operator+(long number) const;
+    //开根号函数
+    Number sqr();
+    //通过传入的Number类型的number输出对应的数字
+    //在数字末尾连续的0个数小于等于9时，会直接输出，例如1000000仍输出为1000000
+    //在数字末尾连续的0个数大于9时，则会使用科学技术的方法，例如850000000输出为85e7
+    //同时会比较设置的精度，输出位数小于设置的精度scale则会补0
+    void Print();
 private:
     //MoveDigit函数生成除法过程中的移位操作后的用于试商的数
     void MoveDigit(const Number &number,long long start);
     //用于比较number中的num和this的num
-    bool CompareNum(const Number &number) const;
+    int CompareNum(const Number &number) const;
     Number CopyNumber() const;
 };
 #endif //PROJECTS_NUMBER_H

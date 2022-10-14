@@ -101,7 +101,7 @@ Number GetOp(const Number &number1, Number number2, const string &op) {
 Number GetOp(const Number &number, const string &op) {
     Number ans;
     if (op == "sqr") {
-        ans = number + 1;
+        ans = ans.sqr();
     } else if (op == "cos") {
         ans = number + 2;
     } else if (op == "sin") {
