@@ -51,6 +51,11 @@ private:
     void MoveDigit(const Number &number,long long start);
     //用于比较number中的num和this的num
     int CompareNum(const Number &number) const;
+    //比较number中包括e和num的大小
+    //-1表示this小于number
+    //0表示this等于number
+    //1表示this大于number
+    int CompareNumber(const Number &number) const;
     Number CopyNumber() const;
 };
 #endif //PROJECTS_NUMBER_H

@@ -435,7 +435,29 @@ int Number::CompareNum(const Number &number) const {
     }
     return -1;
 }
-
+int Number::CompareNumber(const Number &number) const {
+    Exp sum_num1 = this->e+num[0],sum_num2 = number.e + number.num[0];
+    if(sum_num1 > sum_num2) return 1;
+    else if(sum_num1 >= sum_num2) {
+        long long i = num[0],j = number.num[0];
+        while(i > 0 && j > 0) {
+            if(num[i] > number.num[j]) {
+                return 1;
+            } else if (num[i] < number.num[j]) {
+                return -1;
+            } else {
+                i--;
+                j--;
+            }
+        }
+        if(!i && !j) return 0;
+        else if(!i) return -1;
+        else return 1;
+    }
+    else {
+        return -1;
+    }
+}
 void Number::Print() {
     if (!sign) cout << '-';
     //输出小数点
@@ -487,25 +509,25 @@ void Number::Print() {
 
 //利用二分法,来搜索最接近的根号n
 Number Number::sqr() {
-    Number ans, l, r = *this, div("2"), minus("-1");
+    Number mid, l, r = *this, div("2"), minus("-1"),add("1");
     if (!sign) {
         error = true;
         PrintError(7);
-        return ans;
+        return mid;
     }
     if (r.num[0] < scale) {
         l.MoveDigit(*this, (long long) scale - num[0] + 1);
     }
-    while (r.CompareNum(l)) {
-        ans = (l + r) / div;
-        Number tmp = ans * ans;
-        if (tmp.CompareNum(ans) == -1) {
-            l = ans;
+    while (r.CompareNumber(l) == 1) {
+        mid = (l + r + add) / div;
+        Number tmp = mid * mid;
+        if (!tmp.CompareNumber(*this)) {
+            l = mid;
             break;
-        } else if (tmp.CompareNum(ans) == 1) {
-            r = ans + minus;
+        } else if (tmp.CompareNumber(*this) == 1) {
+            r = mid + minus;
         } else {
-            l = ans;
+            l = mid;
         }
     }
     return l;
@@ -536,6 +558,8 @@ void PrintError(int error_code) {
             cout << "Set statement is wrong" << endl;
         case 7:
             cout << "Number in root can't be negative" << endl;
+        case 8:
+            cout << "The expression is wrong" << endl;
         default:
             break;
     }
