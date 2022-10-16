@@ -6,13 +6,7 @@
 using namespace std;
 
 int main() {
-    Number a("10");
-    a.Print();
-    Number b("3.1415926535897932384626433");
-    b.Print();
     string in;
-    (a / b).Print();
-    //b.sqr().Print();
     getline(cin, in);
     while (!(in == "exit")) {
         Number::error = false;
@@ -32,10 +26,3 @@ int main() {
         getline(cin, in);
     }
 }
-/*todo
- * 2022/10/14
- * 1.补全函数操作
- * 2022/10/15
- * 1.完善sqr精度
- * 2.补全sin
- * */

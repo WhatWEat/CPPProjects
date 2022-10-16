@@ -142,6 +142,8 @@ Number Number::operator/(Number &number) const {
         }
         n *= (tmp.sign ? 1 : -1);
         //如果this小于number，则直接输出0
+        Exp tmp1 = e + length_num1;
+        Exp tmp2 = number.e + length_num2;
         if (e + length_num1 >= number.e + length_num2) {
             if (e + length_num1 > number.e + length_num2) {
                 return Div(number, n);
@@ -567,12 +569,43 @@ Number Number::Sqr() {
     }
     return l;
 }
+
 Number Number::sin() {
     Number ans;
+    size_t save_scale = scale;
+    //计算进行回数
+    int count = 1;
+    scale = 30;
+    Number dis("1");
+    //当余项精确到0.1
+    while(!(!dis.e.sign && dis.e.num[0] == 1)){
+        Number tmp = getPow(count);
+        if(count % 2 == 0) tmp.sign = !tmp.sign;
+        Number div = getFactor(count * 2 - 1);
+        dis = tmp /div;
+        ans = ans + dis;
+    }
+    scale = save_scale;
     return ans;
 }
 Number Number::cos() {
     Number ans;
+    return ans;
+}
+Number Number::getFactor(int n) {
+    Number ans("1");
+    Number plus("1"),count("1");
+    for(int i = 1;i <= n;i++) {
+        ans = ans * count;
+        count = count + plus;
+    }
+    return ans;
+}
+Number Number::getPow(int n) {
+    Number ans = *this;
+    for(int i = 2;i <= n;i++) {
+        ans = ans * *this;
+    }
     return ans;
 }
 void PrintError(int error_code) {
@@ -597,10 +630,13 @@ void PrintError(int error_code) {
             break;
         case 6:
             cout << "Set statement is wrong" << endl;
+            break;
         case 7:
             cout << "Number in root can't be negative" << endl;
+            break;
         case 8:
             cout << "The expression is wrong" << endl;
+            break;
         default:
             break;
     }
