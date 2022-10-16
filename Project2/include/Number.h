@@ -39,8 +39,18 @@ public:
     Number operator-(const Number &number) const;
     //此处大数 + 小数用的方法与Exp类中的加法基本一致
     Number operator+(long number) const;
+    //逻辑与
+    Number operator&(const Number &number) const;
+    //逻辑或
+    Number operator|(const Number &number) const;
+    //逻辑非
+    Number Not() const;
     //开根号函数
-    Number sqr();
+    Number Sqr();
+    //sin函数
+    Number sin();
+    //cos函数
+    Number cos();
     //通过传入的Number类型的number输出对应的数字
     //在数字末尾连续的0个数小于等于9时，会直接输出，例如1000000仍输出为1000000
     //在数字末尾连续的0个数大于9时，则会使用科学技术的方法，例如850000000输出为85e7

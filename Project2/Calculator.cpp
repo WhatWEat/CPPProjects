@@ -6,13 +6,13 @@
 using namespace std;
 
 int main() {
-    Number a("3.1415926535897932384626433832795028");
+    Number a("10");
     a.Print();
-    Number b("12100000000000000000000000000000000");
+    Number b("3.1415926535897932384626433");
     b.Print();
     string in;
-    (a+b).Print();
-
+    (a / b).Print();
+    //b.sqr().Print();
     getline(cin, in);
     while (!(in == "exit")) {
         Number::error = false;
