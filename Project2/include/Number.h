@@ -51,6 +51,10 @@ public:
     Number sin();
     //cos函数
     Number cos();
+    //计算阶乘
+    Number getFactor(int n);
+    //计算指数
+    Number getPow(int n);
     //通过传入的Number类型的number输出对应的数字
     //在数字末尾连续的0个数小于等于9时，会直接输出，例如1000000仍输出为1000000
     //在数字末尾连续的0个数大于9时，则会使用科学技术的方法，例如850000000输出为85e7
