@@ -166,7 +166,9 @@ Number Number::operator/(Number &number) const {
 Number Number::operator%(Number &number) const {
     size_t tmp = scale;
     scale = 0;
-    Number ans, reminder = *this / number, minus = reminder * number;
+    Number ans;
+    Number reminder = *this / number;
+    Number minus = reminder * number;
     minus.sign = !minus.sign;
     ans = *this + minus;
     scale = tmp;
@@ -201,6 +203,11 @@ Number Number::Div(Number &number, long long n) const {
         while (reminder.CompareNum(tmp)) {
             ans.num[i]++;
             reminder = reminder - tmp;
+        }
+        //去除头部0
+        while (reminder.num[0] > 0 && reminder.num.back() == 0) {
+            reminder.num.pop_back();
+            reminder.num[0]--;
         }
     }
     //去除头部0
@@ -403,7 +410,33 @@ Number Number::operator+(long number) const {
     }
     return ans;
 }
-
+//逻辑与
+Number Number::operator&(const Number &number) const{
+    Number ans;
+    if(num[0] && number.num[0]) {
+        ans.num.push_back(1);
+        ans.num[0]++;
+    }
+    return ans;
+}
+//逻辑或
+Number Number::operator|(const Number &number) const{
+    Number ans;
+    if(num[0] || number.num[0]) {
+        ans.num.push_back(1);
+        ans.num[0]++;
+    }
+    return ans;
+}
+//逻辑非
+Number Number::Not() const{
+    Number ans;
+    if(!num[0]) {
+        ans.num.push_back(1);
+        ans.num[0]++;
+    }
+    return ans;
+}
 Number Number::CopyNumber() const {
     Number ans("0");
     ans.sign = sign;
@@ -508,7 +541,7 @@ void Number::Print() {
 }
 
 //利用二分法,来搜索最接近的根号n
-Number Number::sqr() {
+Number Number::Sqr() {
     Number mid, l, r = *this, div("2"), minus("-1"),add("1");
     if (!sign) {
         error = true;
@@ -519,7 +552,9 @@ Number Number::sqr() {
         l.MoveDigit(*this, (long long) scale - num[0] + 1);
     }
     while (r.CompareNumber(l) == 1) {
-        mid = (l + r + add) / div;
+        mid = (l + r);
+        mid = (mid + add);
+        mid = mid / div;
         Number tmp = mid * mid;
         if (!tmp.CompareNumber(*this)) {
             l = mid;
@@ -532,8 +567,14 @@ Number Number::sqr() {
     }
     return l;
 }
-
-
+Number Number::sin() {
+    Number ans;
+    return ans;
+}
+Number Number::cos() {
+    Number ans;
+    return ans;
+}
 void PrintError(int error_code) {
     switch (error_code) {
         case 0:

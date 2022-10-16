@@ -93,7 +93,7 @@ Exp Exp::operator+(long long int_num) const{
 Exp Exp::operator-(const Exp &Exp_num) const{
     Exp ans;
     vector<long> big_num, small_num;
-    if (*this >= Exp_num) {
+    if (this->CompareNum(Exp_num)) {
         big_num.assign(num.begin(), num.end());
         small_num.assign(Exp_num.num.begin(), Exp_num.num.end());
         ans.sign = true;
@@ -146,6 +146,8 @@ Exp Exp::operator+(const Exp &Exp_num) const{
         }
         //将上述比较中大的数存储给ans.num
         for (long long i = 1; i <= ans.num[0]; i++) ans.num.push_back(big_num[i]);
+        ans.num[0]++;
+        ans.num.push_back(0);
         for (long long i = 1; i <= ans.num[0]; i++) {
             if (i <= small_num[0]) {
                 ans.num[i] = ans.num[i] + small_num[i];
@@ -228,4 +230,14 @@ void Exp::Print() {
         printf("%lld", num[i]);
     }
     printf("\n");
+}
+bool Exp::CompareNum(const Exp &Exp_num) const{
+    long long length1 = num[0],length2 = Exp_num.num[0];
+    if(length1 > length2) return true;
+    if(length1 < length2) return false;
+    for(long long i = length1;i >= 1;i--) {
+        if(num[i] > Exp_num.num[i]) return true;
+        else if(num[i] < Exp_num.num[i]) return false;
+    }
+    return true;
 }

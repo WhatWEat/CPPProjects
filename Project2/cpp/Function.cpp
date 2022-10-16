@@ -42,10 +42,10 @@ int Judge(const string &s, size_t i) {
             return 2;
         }
     }
-    if (c == '*' || c == '/' || c == '(' || c == ')' || c == '%') return 2;
+    if (c == '*' || c == '/' || c == '(' || c == ')' || c == '%' || c == '|' || c == '&') return 2;
     //如果3个字母和一个括号对比函数库，如果符合则证明为函数
     string tmp = s.substr(i, 4);
-    if (tmp == "sqr(" || tmp == "exp(" || tmp == "sin(" || tmp == "cos(") return 3;
+    if (tmp == "sqr(" || tmp == "exp(" || tmp == "sin(" || tmp == "cos(" || tmp == "Not(") return 3;
     //如果是字母则考虑可能为变量
     if ('a' <= c && c <= 'z' || 'A' <= c && c <= 'Z') return 4;
     //判断是否为赋值
@@ -67,14 +67,18 @@ string Format(string &s) {
 
 int GetPriority(const string &op) {
     int priority = -10;
-    if (op == to_string('+') || op == to_string('-')) {
+    if (op == to_string('|')) {
+        priority = -2;
+    } else if (op == to_string('&')) {
+        priority = -1;
+    } else if (op == to_string('+') || op == to_string('-')) {
         priority = 0;
     } else if (op == to_string('/') || op == to_string('*') || op == to_string('%')) {
         priority = 1;
-    } else if (op == "sqr" || op == "sin" || op == "cos" || op == "exp") {
+    } else if (op == "sqr" || op == "sin" || op == "cos" || op == "Not") {
         priority = 2;
     } else if (op == to_string('(')) {
-        priority = -1;
+        priority = -3;
     }
     return priority;
 }
@@ -94,6 +98,10 @@ Number GetOp(const Number &number1, Number number2, const string &op) {
         ans = number1 * number2;
     } else if (op == to_string('%')) {
         ans = number1 % number2;
+    } else if (op == to_string('&')) {
+        ans = number1 & number2;
+    } else if (op == to_string('|')) {
+        ans = number1 | number2;
     }
     return ans;
 }
@@ -101,13 +109,13 @@ Number GetOp(const Number &number1, Number number2, const string &op) {
 Number GetOp(Number number, const string &op) {
     Number ans;
     if (op == "sqr") {
-        ans = number.sqr();
+        ans = number.Sqr();
     } else if (op == "cos") {
         ans = number + 2;
     } else if (op == "sin") {
         ans = number + 3;
-    } else if (op == "exp") {
-        ans = number + 4;
+    } else if (op == "Not") {
+        ans = number.Not();
     }
     return ans;
 }
@@ -147,25 +155,25 @@ Number ReadToCal(string in) {
                     }
                     op.pop();
                     //处理函数
-                    if (!op.empty() && (op.top() == "sqr" || op.top() == "exp" || op.top() == "sin" || op.top() == "cos")) {
+                    if (!op.empty() &&
+                        (op.top() == "sqr" || op.top() == "exp" || op.top() == "sin" || op.top() == "cos" || op.top() == "Not")) {
                         string_op = op.top();
                         Number num = numbers.top();
                         numbers.pop();
                         numbers.push(GetOp(num, string_op));
                         op.pop();
-                        //if(op.top() == to_string('(')) op.pop();
                     }
                 } else if (string_op == to_string('(') || GetPriority(string_op) > GetPriority(op.top())) {
                     op.push(string_op);
                 } else {
                     while (GetPriority(string_op) <= GetPriority(op.top())) {
-                        if(numbers.empty()) {
+                        if (numbers.empty()) {
                             PrintError(8);
                             return ans;
                         }
                         Number num1 = numbers.top();
                         numbers.pop();
-                        if(numbers.empty()) {
+                        if (numbers.empty()) {
                             PrintError(8);
                             return ans;
                         }
@@ -206,7 +214,7 @@ Number ReadToCal(string in) {
             }
         }
     }
-    if(!op.empty()) {
+    if (!op.empty()) {
         PrintError(8);
     } else {
         ans = numbers.top();

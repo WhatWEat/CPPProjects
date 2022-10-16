@@ -24,6 +24,7 @@ public:
     //判断两个大数的大小
     bool operator>=(const Exp &Exp_num) const;
     bool operator>(const Exp &Exp_num) const;
+    bool CompareNum(const Exp &Exp_num) const;
     void Print();
 };
 void PrintError(int error);
